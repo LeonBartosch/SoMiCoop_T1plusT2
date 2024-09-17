@@ -1,0 +1,153 @@
+{{ block styles }}
+    <style>
+        tr:nth-child(even) {background-color: #f2f2f2;}
+    </style>
+
+{{ endblock }}
+{{ block content }}
+<body>
+<p>
+    In the following, you will find a series of statements about you. Please read each statement and decide how much
+    you agree or disagree with that statement. There are no right or wrong answers. <br>
+    Please indicate how much you agree or disagree using the following scale:
+
+    <br><br>
+</p>
+<table class = "table" id="my_table">
+    <tr>
+        <td></td>
+        <td style="text-align:center">1<br>strongly disagree</td>
+        <td style="text-align:center">2<br>disagree</td>
+        <td style="text-align:center">3<br>neutral (neither agree nor disagree)</td>
+        <td style="text-align:center">4<br>agree</td>
+        <td style="text-align:center">5<br>strongly agree</td>
+    </tr>
+    {{ for field in form }}
+        <tr>
+            <th>{{ field.label }}</th>
+            {{for choice in field}}
+                <th style="text-align:center"> {{choice}} </th>
+            {{endfor}}
+        </tr>
+    {{ endfor }}
+</table>
+<script>
+
+    function ZeilenFunction(my_table) {
+        let table = document.getElementById(my_table)
+        let row1 = table.insertRow(15)
+        let row2 = table.insertRow(30)
+        let row3 = table.insertRow(45)
+        let row4 = table.insertRow(60)
+        let row5 = table.insertRow(75)
+        let row6 = table.insertRow(90)
+        let cell1 = row1.insertCell(0)
+        let cell2 = row1.insertCell(1)
+        let cell3 = row1.insertCell(2)
+        let cell4 = row1.insertCell(3)
+        let cell5 = row1.insertCell(4)
+        let cell6 = row1.insertCell(5)
+        let cell1_2 = row2.insertCell(0)
+        let cell2_2 = row2.insertCell(1)
+        let cell3_2 = row2.insertCell(2)
+        let cell4_2 = row2.insertCell(3)
+        let cell5_2 = row2.insertCell(4)
+        let cell6_2 = row2.insertCell(5)
+        let cell1_3 = row3.insertCell(0)
+        let cell2_3 = row3.insertCell(1)
+        let cell3_3 = row3.insertCell(2)
+        let cell4_3 = row3.insertCell(3)
+        let cell5_3 = row3.insertCell(4)
+        let cell6_3 = row3.insertCell(5)
+        let cell1_4 = row4.insertCell(0)
+        let cell2_4 = row4.insertCell(1)
+        let cell3_4 = row4.insertCell(2)
+        let cell4_4 = row4.insertCell(3)
+        let cell5_4 = row4.insertCell(4)
+        let cell6_4 = row4.insertCell(5)
+        let cell1_5 = row5.insertCell(0)
+        let cell2_5 = row5.insertCell(1)
+        let cell3_5 = row5.insertCell(2)
+        let cell4_5 = row5.insertCell(3)
+        let cell5_5 = row5.insertCell(4)
+        let cell6_5 = row5.insertCell(5)
+        let cell1_6 = row6.insertCell(0)
+        let cell2_6 = row6.insertCell(1)
+        let cell3_6 = row6.insertCell(2)
+        let cell4_6 = row6.insertCell(3)
+        let cell5_6 = row6.insertCell(4)
+        let cell6_6 = row6.insertCell(5)
+        cell1.innerHTML = ""
+        cell2.innerHTML = "1<br>strongly disagree"
+        cell3.innerHTML = "2<br>disagree"
+        cell4.innerHTML = "3<br>neutral (neither agree nor disagree)"
+        cell5.innerHTML = "4<br>agree"
+        cell6.innerHTML = "5<br>strongly agree"
+        cell1_2.innerHTML = ""
+        cell2_2.innerHTML = "1<br>strongly disagree"
+        cell3_2.innerHTML = "2<br>disagree"
+        cell4_2.innerHTML = "3<br>neutral (neither agree nor disagree)"
+        cell5_2.innerHTML = "4<br>agree"
+        cell6_2.innerHTML = "5<br>strongly agree"
+        cell1_3.innerHTML = ""
+        cell2_3.innerHTML = "1<br>strongly disagree"
+        cell3_3.innerHTML = "2<br>disagree"
+        cell4_3.innerHTML = "3<br>neutral (neither agree nor disagree)"
+        cell5_3.innerHTML = "4<br>agree"
+        cell6_3.innerHTML = "5<br>strongly agree"
+        cell1_4.innerHTML = ""
+        cell2_4.innerHTML = "1<br>strongly disagree"
+        cell3_4.innerHTML = "2<br>disagree"
+        cell4_4.innerHTML = "3<br>neutral (neither agree nor disagree)"
+        cell5_4.innerHTML = "4<br>agree"
+        cell6_4.innerHTML = "5<br>strongly agree"
+        cell1_5.innerHTML = ""
+        cell2_5.innerHTML = "1<br>strongly disagree"
+        cell3_5.innerHTML = "2<br>disagree"
+        cell4_5.innerHTML = "3<br>neutral (neither agree nor disagree)"
+        cell5_5.innerHTML = "4<br>agree"
+        cell6_5.innerHTML = "5<br>strongly agree"
+        cell1_6.innerHTML = ""
+        cell2_6.innerHTML = "1<br>strongly disagree"
+        cell3_6.innerHTML = "2<br>disagree"
+        cell4_6.innerHTML = "3<br>neutral (neither agree nor disagree)"
+        cell5_6.innerHTML = "4<br>agree"
+        cell6_6.innerHTML = "5<br>strongly agree"
+        cell2.style.textAlign = 'center';
+        cell3.style.textAlign = 'center';
+        cell4.style.textAlign = 'center';
+        cell5.style.textAlign = 'center';
+        cell6.style.textAlign = 'center';
+        cell2_2.style.textAlign = 'center';
+        cell3_2.style.textAlign = 'center';
+        cell4_2.style.textAlign = 'center';
+        cell5_2.style.textAlign = 'center';
+        cell6_2.style.textAlign = 'center';
+        cell2_3.style.textAlign = 'center';
+        cell3_3.style.textAlign = 'center';
+        cell4_3.style.textAlign = 'center';
+        cell5_3.style.textAlign = 'center';
+        cell6_3.style.textAlign = 'center';
+        cell2_4.style.textAlign = 'center';
+        cell3_4.style.textAlign = 'center';
+        cell4_4.style.textAlign = 'center';
+        cell5_4.style.textAlign = 'center';
+        cell6_4.style.textAlign = 'center';
+        cell2_5.style.textAlign = 'center';
+        cell3_5.style.textAlign = 'center';
+        cell4_5.style.textAlign = 'center';
+        cell5_5.style.textAlign = 'center';
+        cell6_5.style.textAlign = 'center';
+        cell2_6.style.textAlign = 'center';
+        cell3_6.style.textAlign = 'center';
+        cell4_6.style.textAlign = 'center';
+        cell5_6.style.textAlign = 'center';
+        cell6_6.style.textAlign = 'center';
+    }
+
+    window.onload = ZeilenFunction('my_table');
+</script>
+
+{{ next_button }}
+</body>
+{{ endblock }}

@@ -1,0 +1,238 @@
+{{ block style }}
+<style>
+    .choice {
+        text-align: center; /* Center horizontally */
+        vertical-align: middle; /* Center vertically */
+        padding: 10px; /* Optional: add padding for better spacing */
+    }
+
+    table {
+        text-align: center;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .column1 {
+        text-align: end;
+        width: 25%;
+        padding-right: 15px;
+    }
+
+    .column2 {
+        width: 50%;
+        padding-right: 10px;
+    }
+
+    .column3 {
+        text-align: start;
+        width: 25%;
+        padding-left: 15px;
+    }
+
+    .slider-container {
+        position: relative;
+        width: 100%;
+    }
+    .cover,
+    .slider-background {
+        width: 100%;
+        height: 25px;
+        pointer-events: none;
+        position: absolute;
+        transform: translateY(-50%);
+        top: 0;
+        left: 0;
+    }
+    .cover {
+        background-color: #0d6efd;
+        z-index: 10;
+    }
+    .slider {
+        transform: translateX(-50%) translateY(10px);
+        pointer-events:auto;
+        position: absolute;
+        webkit-appearance: none; /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 5px; /* Specified height */
+        background: #d3d3d3; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+        webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity
+    }
+    .slider:hover {
+        opacity: 1;
+    }
+
+     /* Stile für den Thumb des Sliders */
+    .slider::-webkit-slider-thumb {
+        pointer-events:auto;
+        -webkit-appearance: none; /* Entfernt die Standardstile */
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background-color: #0d6efd; /* Hintergrundfarbe für den Thumb */
+        border-radius: 50%; /* Runder Thumb */
+        cursor: pointer;
+    }
+
+    #errorMessage {
+        color: red;
+        height: 50px;
+    }
+
+    #reaction_slider {
+        visibility: hidden; /* Hide slider initially */
+    }
+</style>
+{{ endblock }}
+
+{{ block content }}
+<p>Which of the remaining objects do you choose? The other person chose the marked object.</p>
+
+<table id="hidden_table">
+    <td id="image_out"><img src="{{ static image_out }}" width="180px" /></td>
+</table>
+
+<table id="myTable">
+    <tr>
+        <td>
+            <img src="{{ static image_double }}" width="180px" />
+        </td>
+        <td>
+            <img src="{{ static image_double }}" width="180px" />
+        </td>
+        <td>
+            <img src="{{ static image_unique }}" width="180px" />
+        </td>
+    </tr>
+    <tr>
+        {{ for choice in form.SoMiEG2 }}
+            <td class="choice"> {{ choice }} </td>
+        {{ endfor }}
+    </tr>
+</table>
+
+<table id="myTable2"></table>
+
+<div id="reaction_slider">
+    <p>
+        <br>Please indicate on the slider below how hostile (-1) vs. kind (1) you experience the choice of the first chooser.<br><br>
+        Click the blue bar to reveal the slider.
+    </p>
+    <table>
+        <tr>
+            <td class="column1">
+                <b>hostile</b>
+            </td>
+            <td class="column2">
+                <div class="slider-container">
+                    <div class="slider-background">
+                        <input id="slider1" name="SoMiEG2_reac" class="slider" type="range" value="3" min="1" max="5" step="0.1" onmousedown="sliderMoved()">
+                    </div>
+                    <div id="cover1" class="cover"></div>
+                </div>
+            </td>
+            <td class="column3">
+                <b>kind</b>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="errorMessage"></div>
+
+{{ next_button }}
+
+{{ endblock }}
+
+{{ block script }}
+<script>
+    function sliderMoved() {
+        $(".otree-btn-next").attr("disabled", false);
+        document.getElementById("cover1").style.opacity = 0;
+    }
+
+    function sortTable() {
+        $(".otree-btn-next").on("click", next);
+        $(".otree-btn-next").attr("disabled", true);
+
+        // Existing sortTable code
+        let table = document.getElementById("myTable");
+        let table2 = document.getElementById("myTable2");
+
+        let cellsCollection = table.querySelectorAll("td");
+        let cells = Array.from(cellsCollection);
+
+        let column1 = [cells[0], cells[3]];
+        let column2 = [cells[1], cells[4]];
+        let column3 = [cells[2], cells[5]];
+
+        let rows = [column1, column2, column3];
+
+        let chosen_object = js_vars.id_image_out // 1 oder 2 -> also Bild Nr 2 oder Nr 3
+        rows[chosen_object][1].innerHTML = "";
+        let image_out = document.getElementById("image_out");
+        rows[chosen_object][0] = image_out;
+
+
+        document.getElementById("hidden_table").innerHTML = "";
+
+        let random = [0, 1, 2];
+        shuffleArray(random);
+
+        let row1 = table2.insertRow();
+        let cell1 = row1.insertCell();
+        let cell2 = row1.insertCell();
+        let cell3 = row1.insertCell();
+        let row2 = table2.insertRow();
+        let cell4 = row2.insertCell();
+        let cell5 = row2.insertCell();
+        let cell6 = row2.insertCell();
+
+        table2.rows[0].cells[0].innerHTML = rows[random[0]][0].innerHTML;
+        table2.rows[1].cells[0].innerHTML = rows[random[0]][1].innerHTML;
+        table2.rows[0].cells[1].innerHTML = rows[random[1]][0].innerHTML;
+        table2.rows[1].cells[1].innerHTML = rows[random[1]][1].innerHTML;
+        table2.rows[0].cells[2].innerHTML = rows[random[2]][0].innerHTML;
+        table2.rows[1].cells[2].innerHTML = rows[random[2]][1].innerHTML;
+
+        table.innerHTML = "";
+        cell4.classList.add("choice");
+        cell5.classList.add("choice");
+        cell6.classList.add("choice");
+
+        let choices = document.querySelectorAll("input[type='radio']");
+        for (let choice of choices) {
+            choice.addEventListener("click", reaction);
+        }
+    }
+
+    function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
+
+    function next() {
+        let choices = document.querySelectorAll("input[type='radio']");
+        for (let choice of choices) {
+            choice.disabled = false;
+        }
+    }
+
+    window.onload = sortTable;
+
+    function reaction() {
+        let choices = document.querySelectorAll("input[type='radio']");
+        for (let choice of choices) {
+            choice.disabled = true;
+        }
+        document.getElementById("reaction_slider").style.visibility = "visible";
+    }
+</script>
+{{ endblock }}

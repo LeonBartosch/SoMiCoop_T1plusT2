@@ -1,0 +1,66 @@
+{{ block content }}
+
+    <p>
+    <p><h1>Please enter your personal code </h1></p>
+
+    <p> To be able to merge your answers from the first online part with those from this second part of the study, we
+        ask you to enter your personalized participant code here. <b>Please make sure to enter the same code as in the
+            first part.</b></p>
+
+    <p> Please generate your unique code using the instructions below. If you do not know one of the elements, please
+        enter NA for letters or, 0 for digits instead.</p>
+
+        {{ formfield 'mother_code' }}
+        {{ formfield_errors 'mother_code' }}
+
+        {{ formfield 'father_code' }}
+        {{ formfield_errors 'father_code' }}
+
+        {{ formfield 'city_code' }}
+        {{ formfield_errors 'city_code' }}
+
+        {{ formfield 'birthday_code' }}
+        {{ formfield_errors 'birthday_code' }}
+    </p>
+
+    <input id="code" name="code" type="hidden" />
+
+    <p id="label"></p>
+    <input id="code_memory" name="code_memory" class="form-control" type="text" style="display:none"/><br>
+
+    {{ next_button }}
+
+{{ endblock }}
+
+
+{{ block script }}
+
+<script>
+    function initCode() {
+        $(".otree-btn-next").on("click", next);
+    }
+
+    function next(event) {
+        let code =
+            $("input[name='mother_code']").val() +
+            $("input[name='father_code']").val() +
+            $("input[name='city_code']").val() +
+            $("input[name='birthday_code']").val()
+
+        $("input[name='code']").val(code);
+
+        if (code == "AABBCC000" && code_memory.style.display == "none") {
+            event.preventDefault();
+            event.stopPropagation();
+
+            $("input[name='code_memory']").css("display", "block");
+            $("input[name='code_memory']").attr("required", "true");
+            $("#label").html("Please enter your personalized participant code as you remember it:<br>");
+        }
+    }
+
+    window.onload = initCode;
+
+</script>
+
+{{ endblock }}

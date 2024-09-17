@@ -1,0 +1,271 @@
+
+{{ block styles }}
+	<style>
+		.svotable {
+			width: 110%;
+			transform: translateX(-5%);
+		}
+		.svo-value {
+			border: 1px solid black;
+			font-size: x-large;
+			margin-right: 20em;
+			width: 1.5em;
+			text-align: right;
+		}
+		.svo-button {
+			padding-left: 1em;
+			padding-right: 0.5em;
+		}
+
+		.svo-error-display {
+			display: none;
+    		text-align: center;
+    		padding: 30px;
+    		color: red;
+    		margin: 30px;
+		}
+	</style>
+{{ endblock }}
+
+{{ block content }}
+
+	<div class="svo-error-display">
+		Please answer the remaining questions!
+	</div>
+
+	<table class="svotable">
+		{{ for svorow in SVO }}
+			<tr class="svo-top-row">
+				<th>You receive</th>
+				{{ for svoobject in svorow }}
+					<td rowspan="2" class="svo-button">
+						<input type="radio" value="{{ svoobject.0 }}" data-svo-ego="{{ svoobject.1 }}"
+							  data-svo-alter="{{ svoobject.2 }}" name="svo_row_{{ svoobject.0 }}">
+					</td>
+					<td class="svo-value"> {{ svoobject.1 }} </td>
+				{{ endfor }}
+			</tr>
+			<tr class="svo-bottom-row">
+				<th>The other person receives</th>
+				{{ for svoobject in svorow }} <td class="svo-value"> {{ svoobject.2 }} </td> {{ endfor }}
+			</tr>
+			<tr><td style="height: 40px;"></td>
+		{{ endfor }}
+	</table>
+
+	<input type="hidden" name="svo_choice_1" />
+	<input type="hidden" name="svo_choice_2" />
+	<input type="hidden" name="svo_choice_3" />
+	<input type="hidden" name="svo_choice_4" />
+	<input type="hidden" name="svo_choice_5" />
+	<input type="hidden" name="svo_choice_6" />
+	<input type="hidden" name="svo_choice_7" />
+	<input type="hidden" name="svo_choice_8" />
+	<input type="hidden" name="svo_choice_9" />
+	<input type="hidden" name="svo_choice_10" />
+	<input type="hidden" name="svo_choice_11" />
+	<input type="hidden" name="svo_choice_12" />
+	<input type="hidden" name="svo_choice_13" />
+	<input type="hidden" name="svo_choice_14" />
+	<input type="hidden" name="svo_choice_15" />
+	<input type="hidden" name="svo_choice_1_self" />
+	<input type="hidden" name="svo_choice_2_self" />
+	<input type="hidden" name="svo_choice_3_self" />
+	<input type="hidden" name="svo_choice_4_self" />
+	<input type="hidden" name="svo_choice_5_self" />
+	<input type="hidden" name="svo_choice_6_self" />
+	<input type="hidden" name="svo_choice_7_self" />
+	<input type="hidden" name="svo_choice_8_self" />
+	<input type="hidden" name="svo_choice_9_self" />
+	<input type="hidden" name="svo_choice_10_self" />
+	<input type="hidden" name="svo_choice_11_self" />
+	<input type="hidden" name="svo_choice_12_self" />
+	<input type="hidden" name="svo_choice_13_self" />
+	<input type="hidden" name="svo_choice_14_self" />
+	<input type="hidden" name="svo_choice_15_self" />
+	<input type="hidden" name="svo_choice_1_other" />
+	<input type="hidden" name="svo_choice_2_other" />
+	<input type="hidden" name="svo_choice_3_other" />
+	<input type="hidden" name="svo_choice_4_other" />
+	<input type="hidden" name="svo_choice_5_other" />
+	<input type="hidden" name="svo_choice_6_other" />
+	<input type="hidden" name="svo_choice_7_other" />
+	<input type="hidden" name="svo_choice_8_other" />
+	<input type="hidden" name="svo_choice_9_other" />
+	<input type="hidden" name="svo_choice_10_other" />
+	<input type="hidden" name="svo_choice_11_other" />
+	<input type="hidden" name="svo_choice_12_other" />
+	<input type="hidden" name="svo_choice_13_other" />
+	<input type="hidden" name="svo_choice_14_other" />
+	<input type="hidden" name="svo_choice_15_other" />
+	<input type="hidden" name="svo_tot_ego" />
+	<input type="hidden" name="svo_tot_alter" />
+	<input type="hidden" name="svo_mean_ego" />
+	<input type="hidden" name="svo_mean_alter" />
+	<input type="hidden" name="svo_ratio" />
+	<input type="hidden" name="svo_angle" />
+
+
+	<hr/><br/>
+
+    {{ next_button }}
+
+{{ endblock }}
+
+{{ block scripts }}
+	<script>
+		var nSvoItems 		= 0;
+		var svoTopRows 		= [];
+		var svoBottomRows 	= [];
+		var svoItemsChecked;
+
+		function makeRowChangeListener( idx ) {
+			var listener = function() {
+				svoItemsChecked[idx] = true;
+				svoTopRows[idx].find("th").css("background-color", "white");
+				svoBottomRows[idx].find("th").css("background-color", "white");
+			}
+			return listener;
+		}
+
+		function registerRowChangeListener(rw, inpt, idx) {
+			inpt.on( "change", makeRowChangeListener( idx ) );
+		}
+
+		function initSvoTopRow(rw) {
+			rw.find("input[type='radio']").each( function() { registerRowChangeListener(rw, $(this), nSvoItems ); } );
+			svoTopRows.push( rw );
+			nSvoItems++;
+		}
+
+		function initSvoBottomRow(rw) {
+			svoBottomRows.push( rw );
+		}
+
+		function allSvoChecked() {
+			for(i=0; i<nSvoItems; i++) {
+				if(!svoItemsChecked[i]) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		function checkSvo(event) {
+			if(!allSvoChecked()) {
+				event.preventDefault();
+				event.stopPropagation();
+				for( i=0; i < nSvoItems; i++ ) {
+					if(!svoItemsChecked[i]) {
+						svoTopRows[i].find("th").css("background-color", "red");
+						svoBottomRows[i].find("th").css("background-color", "red");
+					}
+				}
+				$(".svo-error-display").css("display","block");
+				$('html, body').animate({scrollTop: ($(".svo-error-display").first().offset().top)},500);
+			} else {
+				var res = [];
+				var tot_ego   = 0;
+				var tot_alter = 0;
+				var N = 0;
+				var choice_ego = [];
+				var choice_alter = [];
+				var choice = [];
+				for(var i=0; i < nSvoItems; i++) {
+					var inpts = svoTopRows[i].find("input[type='radio']");
+					for( j=0; j < inpts.length; j++) {
+						if($( inpts[j] ).prop("checked")) {
+							res.push( $( inpts[j] ).data("svo-ego") + "/" + $( inpts[j] ).data("svo-alter"));
+							tot_ego   += parseInt( $( inpts[j] ).data("svo-ego") );
+							tot_alter += parseInt( $( inpts[j] ).data("svo-alter") );
+							choice_ego.push(parseInt( $( inpts[j] ).data("svo-ego") ));
+							choice_alter.push(parseInt( $( inpts[j] ).data("svo-alter") ));
+							choice.push(j);
+							N++;
+						}
+					}
+
+				}
+				var tot_ego_primary = 0;
+				var tot_alter_primary = 0;
+				for(var i=0; i<6; i++) {
+					tot_ego_primary += choice_ego[i];
+					tot_alter_primary += choice_alter[i];
+				}
+				var mean_ego = tot_ego / N;
+				var mean_alter = tot_alter / N;
+				var mean_ego_primary = tot_ego_primary / 6;
+				var mean_alter_primary = tot_alter_primary / 6;
+				var ratio = (mean_alter_primary - 350) / (mean_ego_primary - 350);
+				var angle = Math.atan( ratio ) * (180/Math.PI);
+
+
+				$("input[name='svo_tot_ego']").val( tot_ego_primary );
+				$("input[name='svo_tot_alter']").val( tot_alter_primary );
+				$("input[name='svo_mean_ego']").val( mean_ego_primary );
+				$("input[name='svo_mean_alter']").val( mean_alter_primary );
+				$("input[name='svo_ratio']").val( ratio );
+				$("input[name='svo_angle']").val( angle );
+				$("input[name='svo_choice_1']").val( choice[0]+1 );
+				$("input[name='svo_choice_2']").val( choice[1]+1 );
+				$("input[name='svo_choice_3']").val( choice[2]+1 );
+				$("input[name='svo_choice_4']").val( choice[3]+1 );
+				$("input[name='svo_choice_5']").val( choice[4]+1 );
+				$("input[name='svo_choice_6']").val( choice[5]+1 );
+				$("input[name='svo_choice_7']").val( choice[6]+1 );
+				$("input[name='svo_choice_8']").val( choice[7]+1 );
+				$("input[name='svo_choice_9']").val( choice[8]+1 );
+				$("input[name='svo_choice_10']").val( choice[9]+1 );
+				$("input[name='svo_choice_11']").val( choice[10]+1 );
+				$("input[name='svo_choice_12']").val( choice[11]+1 );
+				$("input[name='svo_choice_13']").val( choice[12]+1 );
+				$("input[name='svo_choice_14']").val( choice[13]+1 );
+				$("input[name='svo_choice_15']").val( choice[14]+1 );
+
+				$("input[name='svo_choice_1_self']").val( js_vars.SVO[0][choice[0]][1] );
+				$("input[name='svo_choice_1_other']").val( js_vars.SVO[0][choice[0]][2] );
+				$("input[name='svo_choice_2_self']").val( js_vars.SVO[1][choice[1]][1] );
+				$("input[name='svo_choice_2_other']").val( js_vars.SVO[1][choice[1]][2] );
+				$("input[name='svo_choice_3_self']").val( js_vars.SVO[2][choice[2]][1] );
+				$("input[name='svo_choice_3_other']").val( js_vars.SVO[2][choice[2]][2] );
+				$("input[name='svo_choice_4_self']").val( js_vars.SVO[3][choice[3]][1] );
+				$("input[name='svo_choice_4_other']").val( js_vars.SVO[3][choice[3]][2] );
+				$("input[name='svo_choice_5_self']").val( js_vars.SVO[4][choice[4]][1] );
+				$("input[name='svo_choice_5_other']").val( js_vars.SVO[4][choice[4]][2] );
+				$("input[name='svo_choice_6_self']").val( js_vars.SVO[5][choice[5]][1] );
+				$("input[name='svo_choice_6_other']").val( js_vars.SVO[5][choice[5]][2] );
+				$("input[name='svo_choice_7_self']").val( js_vars.SVO[6][choice[6]][1] );
+				$("input[name='svo_choice_7_other']").val( js_vars.SVO[6][choice[6]][2] );
+				$("input[name='svo_choice_8_self']").val( js_vars.SVO[7][choice[7]][1] );
+				$("input[name='svo_choice_8_other']").val( js_vars.SVO[7][choice[7]][2] );
+				$("input[name='svo_choice_9_self']").val( js_vars.SVO[8][choice[8]][1] );
+				$("input[name='svo_choice_9_other']").val( js_vars.SVO[8][choice[8]][2] );
+				$("input[name='svo_choice_10_self']").val( js_vars.SVO[9][choice[9]][1] );
+				$("input[name='svo_choice_10_other']").val( js_vars.SVO[9][choice[9]][2] );
+				$("input[name='svo_choice_11_self']").val( js_vars.SVO[10][choice[10]][1] );
+				$("input[name='svo_choice_11_other']").val( js_vars.SVO[10][choice[10]][2] );
+				$("input[name='svo_choice_12_self']").val( js_vars.SVO[11][choice[11]][1] );
+				$("input[name='svo_choice_12_other']").val( js_vars.SVO[11][choice[11]][2] );
+				$("input[name='svo_choice_13_self']").val( js_vars.SVO[12][choice[12]][1] );
+				$("input[name='svo_choice_13_other']").val( js_vars.SVO[12][choice[12]][2] );
+				$("input[name='svo_choice_14_self']").val( js_vars.SVO[13][choice[13]][1] );
+				$("input[name='svo_choice_14_other']").val( js_vars.SVO[13][choice[13]][2] );
+				$("input[name='svo_choice_15_self']").val( js_vars.SVO[14][choice[14]][1] );
+				$("input[name='svo_choice_15_other']").val( js_vars.SVO[14][choice[14]][2] );
+			}
+		}
+
+		function initSvo() {
+			$(".svo-top-row").each( function() { initSvoTopRow( $( this ) ); } )
+			$(".svo-bottom-row").each( function() { initSvoBottomRow( $( this ) ); } )
+			svoItemsChecked = new Array(nSvoItems);
+			for( i=0; i < nSvoItems; i++ ) {
+				svoItemsChecked[i] = false;
+			}
+
+			$(".otree-btn-next").on("click", checkSvo )
+		}
+
+		window.onload = initSvo;
+	</script>
+{{ endblock }}

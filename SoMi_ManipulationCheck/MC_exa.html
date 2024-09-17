@@ -1,0 +1,118 @@
+{{ block style }}
+
+<style>
+    .choice {
+        margin: auto;
+        text-align: center;
+        padding-bottom: 80px
+    }
+</style>
+
+{{ endblock }}
+
+{{ block content }}
+
+<p>Please <b>indicate</b> which choice is in the best interest of the second chooser.</p>
+
+<table id="myTable">
+   <tr>
+        <td>
+            <img src="{{ static 'exa.JPG' }}" width="180px"/>
+        </td>
+        <td>
+            <img src="{{ static 'exa.JPG' }}" width="180px"/>
+        </td>
+        <td>
+            <img src="{{ static 'exb.JPG' }}" width="180px"/>
+        </td>
+    </tr>
+    <tr>
+        {{ for choice in form.MC_exa }}
+            <td class="choice"> {{ choice }} </td>
+        {{ endfor }}
+    </tr>
+</table>
+
+<table id="myTable2">
+
+</table>
+
+    {{ next_button }}
+
+{{ endblock }}
+
+{{ block script }}
+
+<script>
+
+    function sortTable() {
+        //get the parent table for convenience
+        let table = document.getElementById("myTable");
+        let table2 = document.getElementById("myTable2");
+
+        //1. get all rows
+        let cellsCollection = table.querySelectorAll("td");
+
+        //2. convert to array
+        let cells = Array.from(cellsCollection)
+
+        let column1 = [cells[0], cells[3]];
+        let column2 = [cells[1], cells[4]];
+        let column3 = [cells[2], cells[5]];
+
+        let rows = new Array()
+        rows[0] = column1;
+        rows[1] = column2;
+        rows[2] = column3;
+
+        let random = [0, 1, 2];
+
+        //3. shuffle
+        shuffleArray(random);
+
+        //4. add back to the DOM
+
+        let row1 = table2.insertRow();
+        let cell1 = row1.insertCell();
+        let cell2 = row1.insertCell();
+        let cell3 = row1.insertCell();
+        let row2 = table2.insertRow();
+        let cell4 = row2.insertCell();
+        let cell5 = row2.insertCell();
+        let cell6 = row2.insertCell();
+
+        table2.rows[0].cells[0].innerHTML = rows[random[0]][0].innerHTML;
+        table2.rows[1].cells[0].innerHTML = rows[random[0]][1].innerHTML;
+        table2.rows[0].cells[1].innerHTML = rows[random[1]][0].innerHTML;
+        table2.rows[1].cells[1].innerHTML = rows[random[1]][1].innerHTML;
+        table2.rows[0].cells[2].innerHTML = rows[random[2]][0].innerHTML;
+        table2.rows[1].cells[2].innerHTML = rows[random[2]][1].innerHTML;
+
+        table.innerHTML = "";
+        cell4.classList.add("choice");
+        cell5.classList.add("choice");
+        cell6.classList.add("choice");
+    }
+
+
+    /**
+     * Randomize array element order in-place.
+     * Using Durstenfeld shuffle algorithm.
+     * from: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array/12646864#12646864
+     */
+    function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
+
+    window.onload = sortTable;
+
+
+
+</script>
+
+{{ endblock }}

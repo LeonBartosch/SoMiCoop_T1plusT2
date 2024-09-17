@@ -1,0 +1,35 @@
+
+{{ block content }}
+
+<p>In the following, You will interact with three other randomly selected study participants. You will remain anonymous,
+    just as the three group members will remain anonymous to you. Each group member will receive the same instructions.
+    <br><br>
+
+    <b>Please note:</b> The payout for this decision situation is between €3 and €15 (in case this task is selected for
+    your payout). The amount of your payout depends on your decisions and those of your group members.<br><br>
+
+    Each person in your group receives a starting amount of €6 for this interaction.<br>
+    You decide how much of this €6 you want to keep and how much (if any) you want to contribute to a joint group
+    project. The total amount of money contributed by all group members to the joint project will be doubled and divided
+    equally between the 4 group members.<br><br>
+
+    Accordingly, each group member receives €1 for every €2 contributed to the joint project. If everyone contributes
+    their entire €6 to the joint project, the money from all group members is doubled: each of them then earns €12.
+    <br>
+    <img src="{{ static 'PGG_Example1.png' }}" width="760px"/><br><br>
+
+    If all other group members contribute €6, but you keep your €6, you earn €15, while the others only receive €9.
+    <br>
+    <img src="{{ static 'PGG_Example2.png' }}" width="760px"/><br><br>
+
+    However, if you are the only one to contribute €6 and the other group members keep their €6, you only earn €3 while
+    the others receive €9.<br>
+    <img src="{{ static 'PGG_Example3.png' }}" width="760px"/><br><br>
+
+    The other persons are <b>REAL</b> and will actually make a decision that will affect your payout amount (if this
+    interaction is selected for your payout).<br><br>
+</p>
+
+    {{ next_button }}
+
+{{ endblock }}

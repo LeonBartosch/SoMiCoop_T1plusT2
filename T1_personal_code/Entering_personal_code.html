@@ -1,0 +1,59 @@
+{{ block content }}
+<html>
+<body>
+    <p>
+    <p><h1>Create a personal code </h1></p>
+
+    <p> To be able to correctly assign your data to both parts of the study without being able to assess identifiable
+        data, we will use a <b>unique code of 6 letters and 3 digits</b> to link your answers anonymously.
+        This code is structured in a way <b>nobody can deduce your identity from your code</b>. However, you can
+        reconstruct your code word at any time. <br>
+        Please make a note of the code, as we will ask you to enter the same code as here at the second appointment. </p>
+
+    <p> Please generate your unique code using the instructions below. If you do not know one of the elements, please
+        enter NA for letters or, 0 for digits instead.</p>
+
+        {{ formfield 'mother_code' }}
+        {{ formfield_errors 'mother_code' }}
+
+        {{ formfield 'father_code' }}
+        {{ formfield_errors 'father_code' }}
+
+        {{ formfield 'city_code' }}
+        {{ formfield_errors 'city_code' }}
+
+        {{ formfield 'birthday_code' }}
+        {{ formfield_errors 'birthday_code' }}
+    </p>
+
+    <input id="code" name="code" type="hidden" />
+
+    {{ next_button }}
+
+</body>
+</html>
+{{ endblock }}
+
+{{ block script }}
+
+<script>
+    function initCode() {
+        $(".otree-btn-next").on("click", next);
+    }
+
+    function next(event) {
+        //event.preventDefault();
+        //event.stopPropagation();
+        let inputs = document.querySelectorAll("input[type='text']");
+        let code = "";
+        for (let obj of inputs) {
+            code += obj.value;
+        }
+        document.getElementById("code").value = code;
+    }
+
+    window.onload = initCode;
+
+</script>
+
+{{ endblock }}

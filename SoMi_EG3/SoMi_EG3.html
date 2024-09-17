@@ -1,0 +1,140 @@
+{{ block style }}
+<style>
+    .choice {
+        margin: auto;
+        text-align: center;
+        padding-bottom: 80px;
+    }
+    .feedback-image {
+        display: none;
+        padding-bottom: 30px;
+    }
+
+</style>
+{{ endblock }}
+
+{{ block content }}
+
+<p>Which of these objects do you choose? You choose first, then the other person!</p>
+
+<table id="myTable">
+    <tr>
+        <td><img src="{{ static image_double }}" width="180px"/></td>
+        <td><img src="{{ static image_double }}" width="180px"/></td>
+        <td><img src="{{ static image_unique }}" width="180px"/></td>
+    </tr>
+    <tr>
+        {{ for choice in form.SoMiEG3 }}
+            <td class="choice" id="choice" onclick="showFeedback()"> {{ choice }} </td>
+        {{ endfor }}
+    </tr>
+</table>
+
+<table id="myTable2"></table>
+
+<div id="feedback" style="visibility: hidden;">
+    <p>This is how the second chooser perceives your choice:</p>
+
+<!--    <input type="hidden" name="EG3_1a_feedback" id="EG3_1a_feedback" />-->
+    <img src="{{ static 'SoMi_feedback_good.jpg' }}" width="180px" id="good" class="feedback-image"/>
+    <img src="{{ static 'SoMi_feedback_bad.jpg' }}" width="180px" id="bad" class="feedback-image"/>
+</div>
+
+{{ next_button }}
+
+{{ endblock }}
+
+{{ block script }}
+<script>
+    function sortTable() {
+        // Get the parent table for convenience
+        let table = document.getElementById("myTable");
+        let table2 = document.getElementById("myTable2");
+
+        // 1. Get all cells
+        let cellsCollection = table.querySelectorAll("td");
+
+        // 2. Convert to array
+        let cells = Array.from(cellsCollection);
+
+        let column1 = [cells[0], cells[3]];
+        let column2 = [cells[1], cells[4]];
+        let column3 = [cells[2], cells[5]];
+
+        let rows = [column1, column2, column3];
+
+        // 3. Shuffle
+        shuffleArray(rows);
+
+        // 4. Add back to the DOM
+        let row1 = table2.insertRow();
+        let cell1 = row1.insertCell();
+        let cell2 = row1.insertCell();
+        let cell3 = row1.insertCell();
+        let row2 = table2.insertRow();
+        let cell4 = row2.insertCell();
+        let cell5 = row2.insertCell();
+        let cell6 = row2.insertCell();
+
+        cell1.innerHTML = rows[0][0].innerHTML;
+        cell4.innerHTML = rows[0][1].innerHTML;
+        cell2.innerHTML = rows[1][0].innerHTML;
+        cell5.innerHTML = rows[1][1].innerHTML;
+        cell3.innerHTML = rows[2][0].innerHTML;
+        cell6.innerHTML = rows[2][1].innerHTML;
+
+        table.innerHTML = "";
+        cell4.classList.add("choice");
+        cell5.classList.add("choice");
+        cell6.classList.add("choice");
+
+        let choices = document.querySelectorAll("input[type='radio']");
+        for (let choice of choices) {
+            choice.addEventListener("click", showFeedback);
+        }
+
+        $(".otree-btn-next").on("click", next);
+        $(".otree-btn-next").attr("disabled", true);
+    }
+
+    /**
+     * Randomize array element order in-place.
+     * Using Durstenfeld shuffle algorithm.
+     * from: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array/12646864#12646864
+     */
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    window.onload = sortTable;
+
+    function showFeedback() {
+        $(".otree-btn-next").attr("disabled", false);
+
+        document.getElementById("feedback").style.visibility = "visible";
+        if (forminputs.SoMiEG3.value ==  1) {
+            document.getElementById("bad").style.display = "block";
+        } else {
+            document.getElementById("good").style.display = "block";
+        }
+
+        let SoMiEG3 = forminputs.SoMiEG3.value;
+
+        let choices = document.querySelectorAll("input[type='radio']");
+        for (let choice of choices) {
+            choice.disabled = true;
+        }
+    }
+
+    function next() {
+        let choices = document.querySelectorAll("input[type='radio']");
+        for (let choice of choices) {
+            choice.disabled = false;
+        }
+    }
+
+</script>
+{{ endblock }}

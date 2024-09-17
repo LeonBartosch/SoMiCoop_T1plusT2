@@ -1,0 +1,35 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block content %}
+
+    <p>
+        <b>This largely concludes this study, thank you very much! We would now like to ask you to answer the following
+        brief questions:</b>
+        <br><br>
+        It is crucial for the success of our study that it only contains information from people who have given the
+        study their full attention. Otherwise, years of effort (by scientists and the time of other participants) could
+        have been in vain. You will receive your payout, independent of how you answer below.
+    </p>
+
+    {{ formfield 'effort' label="I have put" }}
+
+    <div>effort in the processing of this study.</div> <br><br>
+
+    <p>
+        In addition, there are often distractions (other people, television, music, etc.) when working on studies.
+        Please indicate how much attention you paid to the study. Again, you will get your payout. Thank you for your
+        honesty!
+    </p>
+
+    {{ formfield 'attention' label="I have given this study" }}
+
+    <div>attention.</div> <br><br>
+
+    {{ formfield 'use_data' label="Should we use your data in analyzing our study? <b>The answer does not affect your payout!</b>" }}
+
+    <br>
+
+    {% next_button %}
+
+{% endblock %}

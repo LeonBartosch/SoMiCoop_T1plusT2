@@ -1,0 +1,54 @@
+
+{{ block styles }}
+	<style>
+		.svo-value {
+			border: 1px solid black;
+			font-size: x-large;
+			margin-right: 20em;
+			width: 1.5em;
+			text-align: right;
+		}
+		.svo-button {
+			padding-left: 1em;
+			padding-right: 0.5em;
+		}
+	</style>
+{{ endblock }}
+
+{{ block content }}
+
+<p>
+    Thank you for your participation up to this point.<br><br>
+
+    In the next task, you will determine how you would like to divide certain amounts of money between yourself and
+    another person. The other person is another study participant unknown to you. You will remain mutually anonymous.
+    All your decisions are completely confidential. <br><br>
+
+    There is a sending and a receiving person (here called <b>“other person”</b>). You will make a total of 15 decisions
+    in the role of the sending person. However, the sender will decide on the distribution of monetary units for
+    themselves and the receiver. Your task is therefore to indicate which distribution you prefer for each of the
+    following 15 questions. <br><br>
+
+    Your decisions will generate money for both you and the other person. In the example below, one person has decided
+    to divide the money so that they themselves receive 45 monetary units, while the anonymous other person receives 50
+    monetary units. One monetary unit corresponds to one euro cent (€0.01). Thus, in the example below, the person
+    allocates 45 cents to themselves and 50 cents to the other person.<br><br>
+
+    There are no right or wrong answers to this task, it is all about your personal preferences. Once you have made your
+    decision, <b>select the appropriate option.</b> You can only mark <b>one item per question.</b><br><br>
+
+    Your payout will be calculated according to the following principle:
+    Exactly one of the 15 decisions will be randomly selected. With a 50 % chance you will receive
+    payout as the sender. With another 50 % chance you will receive the corresponding payout as the receiving person.
+    Each of the following 15 decisions can therefore potentially determine how much money you receive for your participation.
+    <br><br>
+
+    Please click on "Next" to start the task.
+</p>
+
+<img src="{{ static 'SVO.Example.png' }}" width="760px"/><br><br>
+
+    {{ next_button }}
+{{ endblock }}
+
+

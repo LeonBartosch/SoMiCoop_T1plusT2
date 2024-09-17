@@ -1,0 +1,61 @@
+
+{{ block content }}
+
+<p><b>Now comes the actual decision.</b><br><br>
+
+    Please indicate the amount (in 10-cent increments - 0, 10, 20, 30, ... 590, 600 cents) that you would like to
+    contribute:
+
+ <style>
+        .mgslider-wrapper {
+            border-spacing: 10px;
+        }
+        .mgslider-show {
+            text-align: center;
+        }
+        .mgslider-limit {
+            width: 10%;
+            min-width: 75px;
+            height: 40px;
+            margin: 100px;
+            text-align: center;
+            background: #eee;
+            border: 1px solid #888;
+        }
+        .mgslider-limit, .mgslider-value {
+            font-variant-numeric: tabular-nums;
+        }
+        .mgslider-before {
+            height: 16px;
+            width: 100%;
+            background: #1e5bff;
+        }
+        .mgslider-feedback {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+
+    {{ formfield_errors 'PGG_amount' }}
+
+    <p>Click the blue bar to reveal the slider.</p>
+
+    <div id="sliders_here"></div>
+
+    <script src="{{ static 'mgslider.js' }}"></script>
+
+    <script>
+        $(document).ready(function (event) {
+            slider1 = new mgslider("PGG_amount", 0, 600, 10);
+            slider1.recall = true; // Optional line to remember value across errors
+            slider1.print(document.getElementById("sliders_here"));
+
+        });
+    </script>
+
+</p>
+
+    {{ next_button }}
+
+{{ endblock }}

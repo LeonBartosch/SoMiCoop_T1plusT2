@@ -1,0 +1,72 @@
+{{ block style }}
+
+<style>
+    .choice {
+        margin: auto;
+        padding-right: 6px;
+    }
+</style>
+
+{{ endblock }}
+{{ block content }}
+
+<p> Thank you for your participation up to this point. Only a few questions remain.<br><br>
+
+    Please indicate:</p>
+
+{{ formfield 'gender' }}
+{{ formfield 'age' }}
+
+<table id="emptyTable">
+    <td id="textField">
+        {{ form.other_education }}
+    </td>
+</table>
+
+<table id="educationTable">
+    <p style="margin-top: 25px; margin-bottom: 5px">{{ form.education.label }}</p>
+    {{ for choice in form.education }}
+        <tr>
+            <td class="choice"> {{ choice }} </td>
+            <td>{{ choice.label }} </td>
+            <td></td>
+        </tr>
+    {{ endfor }}
+</table><br>
+
+
+{{ next_button }}
+{{ endblock }}
+
+{{ block script }}
+<script>
+    document.getElementById("educationTable").rows[7].cells[2].innerHTML = document.getElementById("textField").innerHTML;
+    document.getElementById("emptyTable").innerHTML = "";
+    $("input[name='other_education']").attr("disabled", true);
+    $("input[type='radio']").on("click", checkRadio)
+    $(".otree-btn-next").on("click", next);
+
+    function checkRadio() {
+        if (forminputs.education.value == 7) {
+            $("input[name='other_education']").attr("disabled", false);
+        } else {
+            $("input[name='other_education']").attr("disabled", true);
+            document.getElementById("educationTable").rows[6].cells[2].innerHTML = "";
+        }
+    }
+
+    function next() {
+        if (forminputs.education.value == 7 && forminputs.other_education.value == "") {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById("educationTable").rows[6].cells[2].innerHTML = "Fill out this field";
+            document.getElementById("educationTable").rows[6].cells[2].style.color = "red";
+            document.getElementById("educationTable").rows[6].cells[2].style.textAlign = "end";
+        }
+        else {
+            document.getElementById("educationTable").rows[6].cells[2].innerHTML = "";
+        }
+    }
+
+</script>
+{{ endblock }}

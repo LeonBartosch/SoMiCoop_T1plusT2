@@ -1,0 +1,89 @@
+{{ block content }}
+
+<div class="otree-form-errors alert alert-danger" id="error-message" style="display: none;">
+    It appears there is an error. Kindly review the instructions and try again.
+</div>
+
+If needed, please click the button to reveal the instructions once again.<br><br>
+
+<button type="button" class="collapsible" id="instructions_button">Reveal the instructions</button>
+<div class="content" style="display: none;">
+    <p style="border: 0.5mm solid; padding: 10px; margin-top: 5px;">
+        In the following, You will interact with three other randomly selected study participants. You will remain anonymous,
+        just as the three group members will remain anonymous to you. Each group member will receive the same instructions.
+        <br><br>
+
+        <b>Please note:</b> The payout for this decision situation is between €3 and €15 (in case this task is selected for
+        your payout). The amount of your payout depends on your decisions and those of your group members.<br><br>
+
+        Each person in your group receives a starting amount of €6 for this interaction.<br>
+        You decide how much of this €6 you want to keep and how much (if any) you want to contribute to a joint group
+        project. The total amount of money contributed by all group members to the joint project will be doubled and divided
+        equally between the 4 group members.<br>
+        Accordingly, each group member receives €1 for every €2 contributed to the joint project. If everyone contributes
+        their entire €6 to the joint project, the money from all group members is doubled: each of them then earns €12.
+        <br><br>
+
+        If all other group members contribute €6, but you keep your €6, you earn €15, while the others only receive €9.
+        <br><br>
+
+        However, if you are the only one to contribute €6 and the other group members keep their €6, you only earn €3 while
+        the others receive €9.<br><br>
+
+        The other persons are <b>REAL</b> and will actually make a decision that will affect your payout amount (if this
+        interaction is selected for your payout).<br>
+    </p>
+</div>
+<br><br>
+
+<p>
+    <b>Please answer the following questions:</b>
+
+    {{ formfield 'PGG_comprehension1' }}
+    {{ formfield 'PGG_comprehension2' }}
+</p>
+
+{{ next_button }}
+
+<input name="PGG_comprehensionCount" id="PGG_comprehensionCount" type="hidden" />
+<div id="counter" style="display:none;">0</div>
+
+{{ endblock }}
+
+{{ block script }}
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                document.getElementById("instructions_button").innerHTML = "Reveal the instructions";
+            } else {
+                content.style.display = "block";
+                document.getElementById("instructions_button").innerHTML = "Hide the instructions";
+            }
+        });
+    }
+
+    window.onload = initFun;
+
+    function initFun() {
+        $(".otree-btn-next").on("click", next);
+    }
+
+    function next() {
+        if ((forminputs.PGG_comprehension1.value != 600 || forminputs.PGG_comprehension2.value != 0) && forminputs.PGG_comprehension1.value != "" && forminputs.PGG_comprehension2.value != "" && parseInt(document.getElementById("counter").innerHTML) < 2) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById("counter").innerHTML = parseInt(document.getElementById("counter").innerHTML)+1;
+            $('#error-message').css("display","block");
+            $('html, body').animate({scrollTop: ($(".svo-error-display").first().offset().top)},500);
+        }
+        document.getElementById("PGG_comprehensionCount").value = parseInt(document.getElementById("counter").innerHTML);
+    }
+</script>
+
+{{ endblock }}

@@ -4,10 +4,7 @@ SESSION_CONFIGS = [
     dict(
         name='Test',
         app_sequence=[
-            'introduction',
-            'personal_code',
-            'SVO_PGG',
-            'closing_part',
+            'iban_checker_online',
         ],
         num_demo_participants=8,
         svo_file="SVO_Fullx11.csv",
@@ -39,7 +36,8 @@ SESSION_CONFIGS = [
             'SoMi_Post',
             'SVO_PGG',
             'demographics_attention',
-            'closing_part'
+            'closing_part',
+            'iban_checker_online'
         ],
         num_demo_participants=8,
         svo_file="SVO_Fullx9.csv"

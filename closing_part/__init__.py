@@ -102,6 +102,7 @@ class Payout(Page):
             player.payout_part_2 = player.pgg_payoff#.to_real_world_currency(player.session)
 
         player.final_payoff = (player.payout_part_1 + player.payout_part_2)
+        player.participant.payoff = player.final_payoff
 
         pgg_contribution = cu(player.participant.PGG_contribution)#.to_real_world_currency(player.session)
         money_kept = cu(600)-pgg_contribution

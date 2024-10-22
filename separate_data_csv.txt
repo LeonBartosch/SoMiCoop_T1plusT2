@@ -1,0 +1,44 @@
+class Lottery(Page):
+    form_model = 'player'
+    form_fields = ['mail', 'mail_confirm', 'lottery', 'recontact']
+
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        player.participant.progress = 15
+        player.participant.progress_pct = round(player.participant.progress / C.num_pages * 100)
+        player.progress = 15
+        player.lastpage = player.participant._current_page_name
+
+        player.time_end = time.time()
+        player.time_end_string = datetime.datetime.fromtimestamp(time.time()).strftime('%x %X')
+        player.time_spent_total = player.time_end - player.time_start
+
+        code = []
+        mail = []
+        lottery = []
+        recontact = []
+
+        if player.field_maybe_none('lottery') is None:
+            player.lottery = 0
+
+        if player.field_maybe_none('recontact') is None:
+            player.recontact = 0
+
+        code.append(player.participant.code)
+        mail.append(player.mail)
+        lottery.append(player.lottery)
+        recontact.append(player.recontact)
+        df = pd.DataFrame({'code': code, 'mail': mail, 'lottery': lottery, 'recontact': recontact})
+
+        # Save info
+        session_code = player.session.code
+        name = "".join([str(session_code), "_contact_data.csv"])
+
+        if not Path(name).is_file():  # if file does not already exist
+            df.to_csv(name, index=False)  # Saving to current working directory
+        else:
+            df.to_csv(name, header=False, mode='a', index=False)  # append existing file
+
+        player.mail = '[DELETED]'
+        player.mail_confirm = '[DELETED]'
+

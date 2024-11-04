@@ -541,7 +541,7 @@ def creating_session(subsession):
 
 
 # PAGES HEXACO
-class transition_to_HEXACO(Page):
+class Transition_to_HEXACO(Page):
     @staticmethod
     def is_displayed(player):
         return player.participant.round_numbers[player.round_number - 1] == 1
@@ -607,7 +607,7 @@ class Preferences(Page):
         return 4 <= player.participant.round_numbers[player.round_number - 1] <= 15
 
 #PAGES svo slider
-class transition_to_SVO(Page):
+class Transition_to_SVO(Page):
     def before_next_page(player, timeout_happened):
         with open(player.session.config['svo_file']) as f:
             r = csv.reader(f, delimiter=";")
@@ -679,12 +679,12 @@ class SVO_items(Page):
 
 #PAGESEQUENCE
 page_sequence = [
-    transition_to_HEXACO,
+    Transition_to_HEXACO,
     HEXACO,
     Transition_to_Preferences,
     Exercise_Preferences,
     Transition_to_End_of_Exercise_Preferences,
     Preferences,
-    transition_to_SVO,
+    Transition_to_SVO,
     SVO_items
 ]

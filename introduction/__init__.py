@@ -61,7 +61,7 @@ def creating_session(subsession):
             p.participant.preferences_other = SoMi_preferences_other
 
             p.participant.PGG_first = random.choice([True, False])
-            #p.participant.treatment = random.choice(['SoMi_CG', 'SoMi_EG1', 'SoMi_EG2', 'SoMi_EG3'])
+            p.participant.treatment = random.choice(['SoMi_CG', 'SoMi_EG1', 'SoMi_EG2', 'SoMi_EG3'])
 
 
 # PAGES
